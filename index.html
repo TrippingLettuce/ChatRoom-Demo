@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat Room</title>
+    <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to My Chat Room</h1>
+    <iframe id="chat-frame" src="https://deadsimplechat.com/TyD-RkjWo" width="100%" height="600px"></iframe>
+    <script>
+        (async () => {
+            // Initialize the DeadSimpleChat SDK
+            const sdk = new DSChatSDK("TyD-RkjWo", "chat-frame", "pub_334f537232447747506f396e64335f4c5f5f487541682d6441446a34734f794d785171314731345933435a5375415276");
+    
+            // Connect the SDK to the Chat iFrame
+            await sdk.connect();
+    
+            // Listening to Message Event
+            sdk.on("message", (message) => {
+                console.log("New Message Arrived", message);
+            });
+    
+            // Join the Chat Room
+            sdk.join({
+                uniqueUserIdentifier: "10001" // Replace with a unique identifier for each user
+            });
+    
+            // Send a message in the chat room
+            // You can call this method based on some user action, like clicking a send button
+            sdk.sendMessage("Hello World");
+        })();
+    </script>
+    
+</body>
+</html>
