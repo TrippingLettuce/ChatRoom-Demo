@@ -13,25 +13,25 @@
         (async () => {
             // Initialize the DeadSimpleChat SDK
             const sdk = new DSChatSDK("Qs1uFHWMQ", "chat-frame", "pub_6f7a6848307271457372796f69316a6262705f4e374a4c49365278554d415861377a38595f67745930675a39544b7453");
-    
+
             // Connect the SDK to the Chat iFrame
             await sdk.connect();
-    
+
             // Listening to Message Event
             sdk.on("message", (message) => {
                 console.log("New Message Arrived", message);
             });
-    
+
             // Join the Chat Room
             sdk.join({
                 uniqueUserIdentifier: "10001" // Replace with a unique identifier for each user
             });
-    
+
             // Send a message in the chat room
             // You can call this method based on some user action, like clicking a send button
             sdk.sendMessage("Hello World");
         })();
     </script>
-    
+
 </body>
 </html>
