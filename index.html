@@ -5,33 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Chat Room</title>
     <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
+    <style>
+        #chat-frame {
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            height: max(600px, 75vh);
+            width: calc(100% - 500px);
+        }
+        #professor-frame {
+            aspect-ratio: 1/1;
+            float: right;
+            width: 450px;
+        }
+        h1 {
+            font-family: Arial, sans-serif;
+            font-size: 30px;
+            margin: 15px 0 30px 0;
+        }
+
+        /* Add special CSS rules for mobile devices */
+        @media (max-width: 800px) {
+            #chat-frame {
+                height: max(400px, 50vh);
+                width: 100%;
+            }
+            #professor-frame {
+                margin-bottom: 20px;
+                max-height: 70vh;
+                width: 100%;
+            }
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Chat Room</h1>
-    <iframe id="chat-frame" src="https://deadsimplechat.com/Qs1uFHWMQ" width="100%" height="600px"></iframe>
+    <h1>Welcome to Statistics Chat Room</h1>
+    <iframe id="professor-frame" src="place URL for the AI professor here"></iframe>
+    <iframe id="chat-frame" src="https://deadsimplechat.com/Qs1uFHWMQ"></iframe>
     <script>
         (async () => {
             // Initialize the DeadSimpleChat SDK
             const sdk = new DSChatSDK("Qs1uFHWMQ", "chat-frame", "pub_6f7a6848307271457372796f69316a6262705f4e374a4c49365278554d415861377a38595f67745930675a39544b7453");
-    
+
             // Connect the SDK to the Chat iFrame
             await sdk.connect();
-    
+
             // Listening to Message Event
             sdk.on("message", (message) => {
                 console.log("New Message Arrived", message);
             });
-    
+
             // Join the Chat Room
             sdk.join({
-                uniqueUserIdentifier: "10001" // Replace with a unique identifier for each user
+                uniqueUserIdentifier: Math.random()  // Give each user a unique ID
             });
-    
+
             // Send a message in the chat room
             // You can call this method based on some user action, like clicking a send button
             sdk.sendMessage("Hello World");
         })();
     </script>
-    
+
 </body>
 </html>
