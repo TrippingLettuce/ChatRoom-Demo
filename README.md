@@ -1,14 +1,12 @@
-# ChatRoom-Demo
+# CST 435 
+
+This project is to design an instructor-like conversational agent for use in multi-party academic interactions.
 
 
-### Team Members Task
-Kyungchan Im
-Gabriel Aracena
-Andrew Millam
-John Haviland
-Alexander Peltier
-Caleb Klinger
- 
+## Authors
+
+Made by Kyungchan Im, John Haviland, Andrew Millam, Gabriel Aracena, and Alexander Peltier.
+
 ### Setting up on your local machine
 
 1. Clone the repository
@@ -26,4 +24,3 @@ https://app.netlify.com/
 Create Team:
 Connect to Github or upload folder of repo:
 Change site name to desired name:
-
