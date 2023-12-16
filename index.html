@@ -46,7 +46,10 @@
 <body>
     <h1>Welcome to Statistics Chat Room</h1>
     <iframe id="professor-frame" src="place URL for the AI professor here"></iframe>
+    <button id="speakButton" style="font-size: 20px; padding: 10px 20px; margin: 20px;">Speak</button>
+
     <iframe id="chat-frame" src="https://deadsimplechat.com/Qs1uFHWMQ"></iframe>
+
     <script>
         (async () => {
             // Initialize the DeadSimpleChat SDK
@@ -68,6 +71,11 @@
             // Send a message in the chat room
             // You can call this method based on some user action, like clicking a send button
             sdk.sendMessage("Hello World");
+            // Event listener for the Speak button
+            document.getElementById('speakButton').addEventListener('click', function() {
+                const messageToSend = "Your pre-defined message here"; // Modify this as needed
+                sdk.sendMessage(messageToSend);
+            });
         })();
     </script>
 
