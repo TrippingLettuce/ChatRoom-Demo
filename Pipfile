@@ -1,0 +1,36 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+langchain = "*"
+black = "*"
+tiktoken = "*"
+openai = "*"
+pinecone-client = "*"
+unstructured = "*"
+nltk = "*"
+fastapi = "*"
+jinja2 = "*"
+uvicorn = "*"
+streamlit = "*"
+streamlit-chat = "*"
+tqdm = "*"
+python-dotenv = "*"
+pydantic = "*"
+requests = "*"
+flask = "*"
+flask-cors = "*"
+websocket-server = "*"
+websocket = "*"
+websocket-client = "*"
+flask-socketio = "*"
+gevent = "*"
+gevent-websocket = "*"
+gunicorn = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
