@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat Room</title>
+    <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to My Chat Room</h1>
+    <iframe id="chat-frame" src="https://deadsimplechat.com/Qs1uFHWMQ" width="100%" height="600px"></iframe>
+    <script>
+        // Initialize the DeadSimpleChat SDK
+        const sdk = new DSChatSDK("Qs1uFHWMQ", "chat-frame", "pub_6f7a6848307271457372796f69316a6262705f4e374a4c49365278554d415861377a38595f67745930675a39544b7453");
+
+        // Connect the SDK to the Chat iFrame
+        sdk.connect().then(() => {
+            // Listening to Message Event
+            sdk.on("message", (message) => {
+                console.log("New Message Arrived", message);
+                // Send the message to the server
+                fetch('/api/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(message),
+                });
+            });
+
+            // Join the Chat Room
+            sdk.join({
+                uniqueUserIdentifier: "10001" // Replace with a unique identifier for each user
+            });
+
+            // Send a message in the chat room
+            sdk.sendMessage("Hello World");
+        });
+
+        sdk.on("message", async (message) => {
+            console.log("New Message Arrived", message);
+            // Send the message to the Flask server
+            try {
+            const response = await fetch('/api/messages', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message }),
+            });
+            const data = await response.json();
+            console.log("Server response:", data);
+            } catch (error) {
+            console.error("Error sending message to the server:", error);
+            }
+        });
+
+    </script>
+
+</body>
+</html>
