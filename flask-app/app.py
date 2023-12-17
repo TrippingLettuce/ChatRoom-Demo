@@ -3,7 +3,7 @@
 # from pathlib import Path
 
 # app = Flask(__name__)
-# client = openai.OpenAI(api_key="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")
+# client = openai.OpenAI(api_key="openai-api-key")
 
 # @app.route('/generate_speech', methods=['POST'])
 # def generate_speech():
@@ -30,7 +30,7 @@ import time
 
 app = Flask(__name__)
 app.config['SERVER_NAME'] = '127.0.0.1:5000'
-client = openai.OpenAI(api_key="")
+openai.api_key = "openai-api-key"
 
 @app.route('/generate_speech')
 def generate_speech(): # needs to trigger based on AI input
