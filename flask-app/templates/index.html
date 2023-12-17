@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Professor</title>
+</head>
+<body>
+    <button id="speakButton" onclick="generateSpeech()">Start Speaking</button> <!-- Button to start speaking -->
+    <!-- p5 dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.js" integrity="sha512-a5hlZKgpC1LVAuKgVeXdP0D9Yfacj0hLtNdzx9zFMkIWRrQyO37KtIPiqArGmVuaBYu3ON6Vt0N3+G/JaLXQYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/addons/p5.sound.js" integrity="sha512-KxzVm+IqxNNq0+SzT/zzd5PHxY4LPrN+v5gZJ6+JKqjeU3Cr4y/djAg5eNlKDWurn1SeKZpql/yeOMWblMSzOg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <canvas id="audioCanvas"></canvas>
+
+    <script> // Audio Visualizer Code
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var analyser = audioCtx.createAnalyser();
+        var source;
+        var canvas = document.getElementById('audioCanvas');
+        var ctx = canvas.getContext('2d');
+        var source;
+        var song
+        var fft
+        var particles = []
+        var img
+
+        function preload() {
+            img = loadImage("https://images.squarespace-cdn.com/content/v1/58136e341b631bf20f10fb03/1500569439575-2INA4USYRDSAMLKLP331/Grand-Canyon-University-College-of-Education_0008__L7C5890.png");
+        }
+
+        function setup() {
+            createCanvas(windowWidth/2, windowWidth/2);
+            angleMode(DEGREES)
+            imageMode(CENTER)
+            rectMode(CENTER)
+            fft = new p5.FFT(0.8, 512)
+            img.filter(BLUR, 1)
+            noLoop()
+        }
+
+        function draw() {
+            background(0)
+            translate(width/2, height/2)
+
+            fft.analyze()
+            amp = fft.getEnergy(20, 200)
+
+            push()
+            if(amp>230) {
+                rotate(random(-1, 1))
+            }
+            var aspectRatio = img.width / img.height;
+            var newWidth = height * aspectRatio; // calculate new width based on aspect ratio
+            image(img, 0, 0, newWidth, height); // draw image with new width and original height
+            pop()
+
+            var alpha = map(amp, 0, 255, 100, 150)
+            fill(20, alpha)
+            noStroke()
+            rect(0, 0, width, height)
+
+            stroke(255)     // stroke color of ring
+            // stroke(220, 107, 255)
+            strokeWeight(30)
+            noFill()
+            // fill(255)
+
+            var wave = fft.waveform();
+            var prevR;
+
+            for(var t = -1; t <= 1; t += 2) {
+                beginShape();
+                for(var i = 0; i <= 180; i += 0.5) {
+                    var index = floor(map(i,0,180,0,wave.length-1));
+                    var r = map(wave[index], -1, 1, 90, 350);
+                    
+                    if (prevR !== undefined) {
+                        r = lerp(prevR, r, 0.5);
+                    }
+                    
+                    prevR = r;
+                    
+                    var x = r * sin(i) * t;
+                    var y = r * cos(i);
+                    vertex(x,y);
+                }
+                endShape();
+                prevR = undefined;
+            }
+
+        }
+        // function generateSpeech() {
+        //     document.getElementById('speakButton').style.display = 'none';
+        //     var text = "In the heart of an ancient forest, where sunlight dapples through towering trees and the air is filled with the earthy scent of moss and pine, a solitary traveler wanders, marveling at the intricate dance of nature and the timeless serenity that envelops this untouched, mystical haven.";
+        //     fetch('/generate_speech', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({text: text}),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         song = loadSound(data.audio_url, function() {
+        //             song.play();
+        //             loop();
+        //         });
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
+        // }
+        window.addEventListener('load', function() {
+            var eventSource = new EventSource("/generate_speech");
+            console.log("handshake");
+
+            eventSource.onmessage = function(event) {
+                console.log(event.data);
+                generateSpeech(event.data);
+            };
+        });
+
+        // function generateSpeech(audio_url) {
+        //     document.getElementById('speakButton').style.display = 'none';
+        //     song = loadSound(audio_url, function() {
+        //         song.play();
+        //         loop();
+        //     });
+        // }
+        function generateSpeech(audio_url) {
+            print("speak")
+            document.getElementById('speakButton').style.display = 'none';
+            loadSound("http://127.0.0.1:5000/static/speech.mp3", function(song) { // needs to replace url with audio_url, doesn't work.
+                song.play();
+                loop();
+            });
+        }
+    </script>
+</body>
+</html>
