@@ -9,6 +9,7 @@
 <body>
     <h1>Welcome to My Chat Room</h1>
     <iframe id="chat-frame" src="https://deadsimplechat.com/Qs1uFHWMQ" width="100%" height="600px"></iframe>
+    <button id="speakButton">Speak</button>
     <script>
         // Initialize the DeadSimpleChat SDK
         const sdk = new DSChatSDK("Qs1uFHWMQ", "chat-frame", "pub_6f7a6848307271457372796f69316a6262705f4e374a4c49365278554d415861377a38595f67745930675a39544b7453");
@@ -54,6 +55,32 @@
             console.error("Error sending message to the server:", error);
             }
         });
+
+        document.getElementById('speakButton').onclick = async function() {
+        const button = this;
+        // Change button style to indicate processing
+        button.style.backgroundColor = 'grey';
+        button.textContent = 'Processing...';
+        button.disabled = true;
+
+        try {
+            const response = await fetch('http://localhost:5000/recognize_speech');  // Adjust the URL as needed
+            const data = await response.json();
+            
+            // Handling the recognized text
+            console.log("Recognized Speech:", data.text);
+
+            // Optionally, send the recognized text to the chat room
+            sdk.sendMessage(data.text);
+        } catch (error) {
+            console.error("Error during speech recognition:", error);
+        } finally {
+            // Revert button style after processing
+            button.style.backgroundColor = ''; // Reset to original color
+            button.textContent = 'Speak';
+            button.disabled = false;
+        }
+    };
 
     </script>
 

@@ -2,6 +2,7 @@ import time
 import requests
 from Backend.core import get_bot_response
 import urllib.parse
+from speech import speak
 
 # ------------------------------------------------------------ #
 from langchain.chat_models import ChatOpenAI
@@ -9,7 +10,7 @@ from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 
 # Define memory chat
-openai_api_key = "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"
+openai_api_key = "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"
 llm = ChatOpenAI(temperature=0.2, openai_api_key=openai_api_key)
 memory = ConversationBufferMemory()
 
@@ -37,6 +38,8 @@ def send_message(message):
         # "message": get_bot_response(message) # For general chat
         "message": conversation.predict(input=message) # for conversational
     }
+    speak(data["message"])
+
     params = {'auth': encoded_auth_token}
 
     # Send the response

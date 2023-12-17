@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
+from speech import recognize_speech
 
 # ... rest of your imports ...
 
@@ -24,6 +25,11 @@ def handle_messages():
     else:
         # Return the stored messages for AJAX GET request
         return jsonify(messages_store)
+    
+@app.route('/recognize_speech', methods=['GET'])
+def recognize_speech_route():
+    recognized_text = recognize_speech()
+    return jsonify({'text': recognized_text})
 
 if __name__ == '__main__':
     app.run(debug=True)

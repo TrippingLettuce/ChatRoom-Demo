@@ -9,6 +9,7 @@
 <body>
     <h1>Welcome to My Chat Room</h1>
     <iframe id="chat-frame" src="https://deadsimplechat.com/Qs1uFHWMQ" width="100%" height="600px"></iframe>
+    <button id="speakButton">Speak</button>
     <script>
         (async () => {
             // Initialize the DeadSimpleChat SDK
@@ -22,14 +23,39 @@
                 console.log("New Message Arrived", message);
             });
 
-            // Join the Chat Room
-            sdk.join({
-                uniqueUserIdentifier: "10001" // Replace with a unique identifier for each user
-            });
-
             // Send a message in the chat room
             // You can call this method based on some user action, like clicking a send button
-            sdk.sendMessage("Hello World");
+
+            // Function to send "Speech Sent" message
+            function sendSpeechMessage() {
+                sdk.sendMessage("Speech Sent");
+            }
+
+            document.getElementById('speakButton').onclick = async function() {
+        const button = this;
+        // Change button style to indicate processing
+        button.style.backgroundColor = 'grey';
+        button.textContent = 'Processing...';
+        button.disabled = true;
+
+        try {
+            const response = await fetch('http://localhost:5000/recognize_speech');  // Adjust the URL as needed
+            const data = await response.json();
+            
+            // Handling the recognized text
+            console.log("Recognized Speech:", data.text);
+
+            // Optionally, send the recognized text to the chat room
+            sdk.sendMessage(data.text);
+        } catch (error) {
+            console.error("Error during speech recognition:", error);
+        } finally {
+            // Revert button style after processing
+            button.style.backgroundColor = ''; // Reset to original color
+            button.textContent = 'Speak';
+            button.disabled = false;
+        }
+    };
         })();
     </script>
 
