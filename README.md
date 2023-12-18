@@ -5,7 +5,7 @@ This project is to design an instructor-like conversational agent for use in mul
 
 ## Authors
 
-Made by Kyungchan Im, John Haviland, Andrew Millam, Gabriel Aracena, and Alexander Peltier.
+Made by Kyungchan Im, John Haviland, Andrew Millam, Gabriel Aracena, Nathan Dilla, and Alexander Peltier.
 
 ### Setting up on your local machine
 
